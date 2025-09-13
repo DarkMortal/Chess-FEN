@@ -50,14 +50,14 @@ def predict_image(img_path, model):
     color = colors[np.argmax(color_pred[0])]
     return piece, color
 
-def preprocess(img, size=IMAGE_SIZE):
+def preprocess(img, size = IMAGE_SIZE):
     img = img.resize(size).convert("RGB")
-    arr = np.array(img, dtype=np.float32) / 255.0
+    arr = np.array(img, dtype = np.float32) / 255.0
     return np.expand_dims(arr, axis=0)
 
 def predict_square(img):
     arr = preprocess(img)
-    piece_pred, color_pred = predictionModel.predict(arr, verbose=0)
+    piece_pred, color_pred = predictionModel.predict(arr, verbose = 0)
 
     piece_idx = np.argmax(piece_pred[0])
     color_idx = np.argmax(color_pred[0])
@@ -83,12 +83,15 @@ def generate_board_matrix(board_img):
         row_pieces = []
         for col in range(8):
             square = board_img.crop((col * sq_w, row * sq_h, (col + 1) * sq_w, (row + 1) * sq_h))
-            row_pieces.append(predict_square(square))
+            prediction = predict_square(square)
+            print(prediction)
+            row_pieces.append(prediction)
         board_matrix.append(row_pieces)
     
     return board_matrix
 
 def matrix_to_fen(board_matrix):
+    print(board_matrix)
     fen_rows = []
     for row in board_matrix:
         fen_row = ""
@@ -106,4 +109,5 @@ def matrix_to_fen(board_matrix):
         fen_rows.append(fen_row)
     return "/".join(fen_rows)
 
-# print(predict_image("tests/test.png", predictionModel))
+# Example
+# print(predict_image("tests/Example 1.png", predictionModel))

@@ -6,6 +6,7 @@ import streamlit as st
 from main import generate_board_matrix, matrix_to_fen
 
 # from edge_detection import _edge_density, _cv2_has_chessboard
+IMAGE_SIZE = (128, 128) 
 
 def visualizeBoard(board: List[List[str]]):
     for row in board:
@@ -46,7 +47,7 @@ else:
 
 if image_source:
     try:
-        img = Image.open(image_source).convert("RGB") if isinstance(image_source, str) else Image.open(image_source).convert("RGB")
+        img = Image.open(image_source).convert("RGB").resize(IMAGE_SIZE)
         
         # if not _cv2_has_chessboard(img):
         #   raise Exception("Not a valid image")
