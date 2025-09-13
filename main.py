@@ -84,14 +84,12 @@ def generate_board_matrix(board_img):
         for col in range(8):
             square = board_img.crop((col * sq_w, row * sq_h, (col + 1) * sq_w, (row + 1) * sq_h))
             prediction = predict_square(square)
-            print(prediction)
             row_pieces.append(prediction)
         board_matrix.append(row_pieces)
     
     return board_matrix
 
 def matrix_to_fen(board_matrix):
-    print(board_matrix)
     fen_rows = []
     for row in board_matrix:
         fen_row = ""

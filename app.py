@@ -5,8 +5,8 @@ from typing import List
 import streamlit as st
 from main import generate_board_matrix, matrix_to_fen
 
-# from edge_detection import _edge_density, _cv2_has_chessboard
-IMAGE_SIZE = (128, 128) 
+from edge_detection import _edge_density, _cv2_has_chessboard
+IMAGE_SIZE = (1024, 1024) 
 
 def visualizeBoard(board: List[List[str]]):
     for row in board:
