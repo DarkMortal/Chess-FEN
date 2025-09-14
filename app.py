@@ -3,7 +3,14 @@ import traceback
 from PIL import Image
 from typing import List
 import streamlit as st
+from streamlit import markdown as md
+
 from main import generate_board_matrix, matrix_to_fen
+
+# TODO: load styles
+def load_css(filepath = "./styles/styles.css"):
+    with open(filepath) as file:
+        md(f'<style>{file.read()}</style>', unsafe_allow_html=True)
 
 # from edge_detection import _edge_density, _cv2_has_chessboard
 IMAGE_SIZE = (1024, 1024) 
@@ -20,6 +27,7 @@ def visualizeBoard(board: List[List[str]]):
 # Example boards directory
 EXAMPLES_DIR = "tests"
 
+# load_css()
 st.set_page_config(page_title="Chess FEN Scanner", layout="centered")
 
 st.title("♟️ Chess FEN Scanner")
@@ -27,6 +35,8 @@ st.write("Upload a chessboard image to generate its FEN notation.")
 
 # File uploader
 uploaded_file = st.file_uploader("Upload a chessboard image", type=["png", "jpg", "jpeg"])
+
+is_board_flipped = st.checkbox("Is the board flipped")
 
 # Example section
 st.subheader("📌 Example Boards")
@@ -45,7 +55,7 @@ elif example_choice and example_choice != "Select an example":
 else:
     image_source = None
 
-if image_source:
+if st.button("Generate FEN", use_container_width = True) and image_source:
     try:
         img = Image.open(image_source).convert("RGB").resize(IMAGE_SIZE)
         
@@ -55,10 +65,12 @@ if image_source:
         # TODO: fallback to heuristic
         # _edge_density(img)
         
-        st.image(img, caption="Selected Chessboard",  width = 'stretch')
+        st.image(img, caption = "Selected Image", use_container_width = True)
         board_matrix = generate_board_matrix(img)
 
         # Base FEN
+        if is_board_flipped:
+            board_matrix = [row[::-1] for row in board_matrix[::-1]]
         placement = matrix_to_fen(board_matrix)
 
         if placement is None:
