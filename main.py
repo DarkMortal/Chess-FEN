@@ -65,11 +65,13 @@ def predict_square(img):
     color_conf = color_pred[0][color_idx]
 
     # If low confidence -> empty square
-    if piece_conf < THRESHOLD or color_conf < THRESHOLD:
+    if piece_conf < THRESHOLD:
         return "."
 
     piece = pieces[piece_idx]
     color = colors[color_idx]
+    # if color_conf < THRESHOLD:
+    #    color = colors[(color_idx + 1) & 1]
     return fen_map[(piece, color)]
 
 def generate_board_matrix(board_img):
