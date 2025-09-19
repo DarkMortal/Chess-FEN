@@ -14,5 +14,6 @@
 - Run the `Extraction Script.py` file to create images if individual pieces.
 - Run the `Flat Folder.py` file to generate flattened dataset, i.e, images are organised in sub-folders based on their categories.
 ***
+## [App demo](https://www.youtube.com/watch?v=Z0pF8115-fk)
 TODO: Chess-board edge-detection algorithm still not working properly. Need to fix that.
 ***
