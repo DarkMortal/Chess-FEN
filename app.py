@@ -57,7 +57,7 @@ else:
 
 # Metadata options
 st.subheader("Metadata Options")
-side_to_move = st.radio("Side to move", ["w", "b"])
+side_to_move = st.radio("Side to move", ["white", "black"])
 castling = ""
 if st.checkbox("White King-side (K)"): castling += "K"
 if st.checkbox("White Queen-side (Q)"): castling += "Q"
@@ -90,7 +90,7 @@ if st.button("Generate FEN", use_container_width = True) and image_source:
         if placement is None:
             st.error("Please upload a different image and try again")
         else:
-            final_fen = f"{placement} {side_to_move} {castling} {en_passant} {halfmove} {fullmove}"
+            final_fen = f"{placement} {'w' if side_to_move == "white" else 'b'} {castling} {en_passant} {halfmove} {fullmove}"
             st.subheader("Generated FEN")
             st.code(final_fen, language="text")
 
