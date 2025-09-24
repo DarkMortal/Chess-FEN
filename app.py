@@ -55,6 +55,20 @@ elif example_choice and example_choice != "Select an example":
 else:
     image_source = None
 
+# Metadata options
+st.subheader("Metadata Options")
+side_to_move = st.radio("Side to move", ["w", "b"])
+castling = ""
+if st.checkbox("White King-side (K)"): castling += "K"
+if st.checkbox("White Queen-side (Q)"): castling += "Q"
+if st.checkbox("Black King-side (k)"): castling += "k"
+if st.checkbox("Black Queen-side (q)"): castling += "q"
+if castling == "": castling = "-"
+en_passant = st.text_input("En passant target square", "-")
+halfmove = st.number_input("Halfmove clock", min_value=0, value=0)
+fullmove = st.number_input("Fullmove number", min_value=1, value=1)
+
+# TODO: generate FEN
 if st.button("Generate FEN", use_container_width = True) and image_source:
     try:
         img = Image.open(image_source).convert("RGB").resize(IMAGE_SIZE)
@@ -76,19 +90,6 @@ if st.button("Generate FEN", use_container_width = True) and image_source:
         if placement is None:
             st.error("Please upload a different image and try again")
         else:
-            # Metadata options
-            st.subheader("Metadata Options")
-            side_to_move = st.radio("Side to move", ["w", "b"])
-            castling = ""
-            if st.checkbox("White King-side (K)"): castling += "K"
-            if st.checkbox("White Queen-side (Q)"): castling += "Q"
-            if st.checkbox("Black King-side (k)"): castling += "k"
-            if st.checkbox("Black Queen-side (q)"): castling += "q"
-            if castling == "": castling = "-"
-            en_passant = st.text_input("En passant target square", "-")
-            halfmove = st.number_input("Halfmove clock", min_value=0, value=0)
-            fullmove = st.number_input("Fullmove number", min_value=1, value=1)
-
             final_fen = f"{placement} {side_to_move} {castling} {en_passant} {halfmove} {fullmove}"
             st.subheader("Generated FEN")
             st.code(final_fen, language="text")
