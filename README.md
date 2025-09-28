@@ -9,6 +9,9 @@
 - Install dependencies
 
       pip3 install -r requirements.txt
+- Run tests
+
+      python3 tests.py
 ***
 ## Creating the dataset
 - Run the `Extraction Script.py` file to create images if individual pieces.
