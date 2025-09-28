@@ -2,9 +2,10 @@ import os
 from PIL import Image
 
 # Input image path
-style_name = "Game Room" 
-theme = "Green"
-input_image = f"Board/{style_name}/{theme}.png"
+style_name = "Game Room"
+theme = "Blue"
+current_dir = os.path.dirname(os.path.abspath(__file__))
+input_image = os.path.join(current_dir, f"Board/{style_name}/{theme}.png")
 
 # Piece mapping according to standard chess notation
 piece_map = {
@@ -18,13 +19,13 @@ piece_map = {
 
 # Initial board placement (FEN format equivalent)
 initial_board = [
-    ["R", "N", "B", "Q", "K", "B", "N", "R"],  # 8th rank (black back row)
-    ["P"] * 8,                                # 7th rank (black pawns)
-    [None] * 8,                               # 6th
-    [None] * 8,                               # 5th
-    [None] * 8,                               # 4th
-    [None] * 8,                               # 3rd
-    ["P"] * 8,                                # 2nd rank (white pawns)
+    ["r", "n", "b", "q", "k", "b", "n", "r"],  # 8th rank (black back row)
+    ["p"] * 3 + ["K", "Q"] + ["p"] * 3,        # 7th rank (black pawns)
+    [None] * 8,                                # 6th
+    [None] * 8,                                # 5th
+    [None] * 8,                                # 4th
+    [None] * 8,                                # 3rd
+    ["P"] * 3 + ["k", "q"] + ["P"] * 3,        # 2nd rank (white pawns)
     ["R", "N", "B", "Q", "K", "B", "N", "R"],  # 1st rank (white back row)
 ]
 
@@ -59,8 +60,8 @@ for row in range(8):
         piece = initial_board[row][col]
         if piece:
             # Determine color
-            color = "black" if row < 2 else "white"
-            piece_name = piece_map[piece]
+            color = "black" if piece.islower() else "white"
+            piece_name = piece_map[piece.upper()]
 
             # Special handling for pawns
             if piece_name == "pawn":
