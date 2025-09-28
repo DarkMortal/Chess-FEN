@@ -8,17 +8,19 @@ from tensorflow.python.keras.engine import data_adapter
 from keras import __version__
 tf_keras.__version__ = __version__
 
+from trained_models.model_version import VERSION
+
 def _is_distributed_dataset(ds):
     return isinstance(ds, data_adapter.input_lib.DistributedDatasetSpec)
 
 data_adapter._is_distributed_dataset = _is_distributed_dataset
 
-MODEL_PATH = "trained_models/chess_piece_color_model.h5"
+MODEL_PATH = f"trained_models/chess_piece_color_model{VERSION}.h5"
 predictionModel = load_model(MODEL_PATH)
 print("✅ Model loaded successfully!")
 
 IMAGE_SIZE = (128, 128)   # must match training
-THRESHOLD = 0.7           # min confidence to consider non-empty
+THRESHOLD = 0.9          # min confidence to consider non-empty
 pieces = ["pawn", "rook", "knight", "bishop", "queen", "king"]
 colors = ["black", "white"]
 
@@ -43,11 +45,25 @@ def load_image(path):
     return np.array(img, dtype=np.float32) / 255.0
 
 def predict_image(img_path, model):
+    # TODO: pre-process the image
     img = load_image(img_path)
     arr = np.expand_dims(img, axis=0)
-    piece_pred, color_pred = model.predict(arr)
-    piece = pieces[np.argmax(piece_pred[0])]
-    color = colors[np.argmax(color_pred[0])]
+
+    piece_pred, color_pred = model.predict(arr, verbose = 0)
+    piece_idx = np.argmax(piece_pred[0])
+    color_idx = np.argmax(color_pred[0])
+
+    piece_conf = piece_pred[0][piece_idx]
+    color_conf = color_pred[0][color_idx]
+
+    print(piece_conf, color_conf)
+
+    piece = pieces[piece_idx]
+    color = colors[color_idx]
+
+    #if color_conf < THRESHOLD:
+    #    color = colors[(color_idx + 1) & 1]
+
     return piece, color
 
 def preprocess(img, size = IMAGE_SIZE):
@@ -70,8 +86,10 @@ def predict_square(img):
 
     piece = pieces[piece_idx]
     color = colors[color_idx]
-    # if color_conf < THRESHOLD:
+    
+    #if color_conf < THRESHOLD:
     #    color = colors[(color_idx + 1) & 1]
+    
     return fen_map[(piece, color)]
 
 def generate_board_matrix(board_img):

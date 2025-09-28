@@ -6,13 +6,13 @@ import streamlit as st
 from streamlit import markdown as md
 
 from main import generate_board_matrix, matrix_to_fen
+from trained_models.model_version import VERSION
 
 # TODO: load styles
 def load_css(filepath = "./styles/styles.css"):
     with open(filepath) as file:
         md(f'<style>{file.read()}</style>', unsafe_allow_html=True)
 
-# from edge_detection import _edge_density, _cv2_has_chessboard
 IMAGE_SIZE = (1024, 1024) 
 
 def visualizeBoard(board: List[List[str]]):
@@ -30,7 +30,8 @@ EXAMPLES_DIR = "tests"
 # load_css()
 st.set_page_config(page_title="Chess FEN Scanner", layout="centered")
 
-st.title("♟️ Chess FEN Scanner")
+st.title("♟️ Chess FEN Generator")
+st.subheader(f"Model version: {VERSION}")
 st.write("Upload a chessboard image to generate its FEN notation.")
 
 # File uploader
@@ -72,14 +73,8 @@ fullmove = st.number_input("Fullmove number", min_value=1, value=1)
 if st.button("Generate FEN", use_container_width = True) and image_source:
     try:
         img = Image.open(image_source).convert("RGB").resize(IMAGE_SIZE)
-        
-        # if not _cv2_has_chessboard(img):
-        #   raise Exception("Not a valid image")
-
-        # TODO: fallback to heuristic
-        # _edge_density(img)
-        
         st.image(img, caption = "Selected Image", use_container_width = True)
+        
         board_matrix = generate_board_matrix(img)
 
         # Base FEN

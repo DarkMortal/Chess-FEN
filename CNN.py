@@ -11,10 +11,12 @@ from keras.layers import BatchNormalization
 from keras import __version__
 tf_keras.__version__ = __version__
 
+from trained_models.model_version import VERSION
+
 # Config
 DATASET_DIR = "dataset/flattened_dataset"
 OUTPUT_DIR = "trained_models"
-MODEL_NAME = "chess_piece_color_model.h5"
+MODEL_NAME = f"chess_piece_color_model{VERSION}.h5"
 IMAGE_SIZE = (128, 128)
 BATCH_SIZE = 32
 EPOCHS = 20
@@ -114,7 +116,6 @@ model.compile(
 )
 
 model.summary()
-
 
 # TODO: Train the model
 history = model.fit(

@@ -2,8 +2,8 @@ import os
 from PIL import Image
 
 # Input image path
-style_name = "Game Room"
-theme = "Blue"
+style_name = "Collins"
+theme = "Brown"
 current_dir = os.path.dirname(os.path.abspath(__file__))
 input_image = os.path.join(current_dir, f"Board/{style_name}/{theme}.png")
 

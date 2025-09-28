@@ -8,14 +8,14 @@ into:
   flattened_dataset/{piece}/{color}/Piece_n.png
 
 Usage:
-  python flatten_and_copy.py
+  python3 "Flat Folder.py"
 """
 
 from pathlib import Path
 import shutil, re, sys
 
 # ----------- CONFIG -------------
-SRC_DIR = Path("")               # <-- original nested dataset root
+SRC_DIR = Path("")                      # <-- original nested dataset root
 DST_DIR = Path("flattened_dataset")     # <-- flattened copy destination
 DRY_RUN = False                         # True = don't actually copy, just print actions
 # Allowed image extensions (lowercase)
